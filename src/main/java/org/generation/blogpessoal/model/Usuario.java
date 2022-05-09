@@ -24,7 +24,7 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@NotNull
+	@NotNull(message = "O Campo nome precisa ser preenchido")
 	@Size(min = 2, max = 100)
 	private String nome;
 	@Schema (example = "email@email.com.br")
@@ -34,8 +34,11 @@ public class Usuario {
 	@NotNull
 	@Size(min = 6, max = 100)
 	private String senha;
-
+	@Size(max=5000)
 	private String foto;
+	
+	private String tipo;
+	
 
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
@@ -92,6 +95,16 @@ public class Usuario {
 
 	public void setFoto(String foto) {
 		this.foto = foto;
+	}
+	
+	
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public List<Postagem> getPostagens() {
