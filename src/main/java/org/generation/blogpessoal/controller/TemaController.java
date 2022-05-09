@@ -6,7 +6,9 @@ import javax.validation.Valid;
 
 import org.generation.blogpessoal.model.Tema;
 import org.generation.blogpessoal.repository.TemaRepository;
+import org.generation.blogpessoal.service.TemaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties.Build;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,6 +28,9 @@ public class TemaController {
 
 	@Autowired
 	private TemaRepository repository;
+	
+	@Autowired
+	private TemaService service;
 
 	@GetMapping
 	public ResponseEntity<List<Tema>> getAll() {
@@ -44,14 +49,18 @@ public class TemaController {
 
 	@PostMapping
 	public ResponseEntity<Tema> post(@Valid @RequestBody Tema tema) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema));
+		return service.cadastrarTema(tema).map(resp -> ResponseEntity.status(HttpStatus.CREATED).body(resp))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+		
 	}
 
 	@PutMapping
 	public ResponseEntity<Tema> put(@RequestBody Tema tema) {
-		return ResponseEntity.ok(repository.save(tema));
+		return service.atualizarTema(tema).map(resp -> ResponseEntity.status(HttpStatus.CREATED).body(resp))
+				.orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+		
 	}
-
+	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
 		repository.deleteById(id);
