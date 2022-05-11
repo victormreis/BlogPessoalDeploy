@@ -15,12 +15,12 @@ public class TemaService {
 	
 	public Optional<Tema> cadastrarTema(Tema tema){
 		
-		if(repo.findByDescricao(tema.getDescricao()).isPresent()) {
-			return Optional.empty();
+		if(repo.findAllByDescricaoContainingIgnoreCase(tema.getDescricao()).isEmpty()) {
+			return Optional.of(repo.save(tema));
 		}
 		
-		return Optional.of(repo.save(tema));
 		
+		return Optional.empty();
 	}
 	
 public Optional<Tema> atualizarTema(Tema tema){
