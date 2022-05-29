@@ -27,22 +27,25 @@ public class Usuario {
 	@NotNull(message = "O Campo nome precisa ser preenchido")
 	@Size(min = 2, max = 100)
 	private String nome;
-	@Schema (example = "email@email.com.br")
+	@Schema(example = "email@email.com.br")
 	@NotNull(message = "O atributo Usuario é Obrigatorio!")
-	@Email (message = "O atributo usuario deve ser um email valido!")
+	@Email(message = "O atributo usuario deve ser um email valido!")
 	private String usuario;
 	@NotNull
 	@Size(min = 6, max = 100)
 	private String senha;
-	@Size(max=5000)
+	@Size(max = 5000)
 	private String foto;
-	
+
 	private String tipo;
-	
 
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagens;
+
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("usuario")
+	private List<Comentario> comentario;
 
 	public Long getId() {
 		return id;
@@ -96,8 +99,6 @@ public class Usuario {
 	public void setFoto(String foto) {
 		this.foto = foto;
 	}
-	
-	
 
 	public String getTipo() {
 		return tipo;
@@ -119,6 +120,12 @@ public class Usuario {
 		this.id = id;
 	}
 
-	
+	public List<Comentario> getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(List<Comentario> comentario) {
+		this.comentario = comentario;
+	}
 
 }

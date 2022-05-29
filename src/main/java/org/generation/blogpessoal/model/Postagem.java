@@ -1,11 +1,15 @@
 package org.generation.blogpessoal.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,6 +29,8 @@ public class Postagem {
 	@Size(max = 100)
 	private String titulo;
 
+	private String foto;
+
 	@Size(min = 4, max = 1000) // define o tamanho minimo e maximo do campo
 	private String texto;
 
@@ -38,6 +44,10 @@ public class Postagem {
 	@ManyToOne
 	@JsonIgnoreProperties("postagem")
 	private Usuario usuario;
+
+	@OneToMany(mappedBy = "postagem", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("postagem")
+	private List<Comentario> comentario;
 
 	// Metodos Getters and Setters
 
@@ -55,6 +65,14 @@ public class Postagem {
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 
 	public String getTexto() {
@@ -89,5 +107,12 @@ public class Postagem {
 		this.usuario = usuario;
 	}
 
-	
+	public List<Comentario> getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(List<Comentario> comentario) {
+		this.comentario = comentario;
+	}
+
 }
